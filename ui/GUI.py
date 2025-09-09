@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget,QVBoxLayout,QLabel
 from controller import Controller
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage,QPixmap
+from pynput import keyboard
 
 class AirSimGUI(QWidget):
     def __init__(self):
@@ -18,6 +19,9 @@ class AirSimGUI(QWidget):
         self.drone=Controller()
         self.drone.image_signal.connect(self.update_image)
         self.drone.start()
+        
+        self.listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
+        self.listener.start()
     
     def update_status(self,mode):
         self.status.setText(f"Present Button: {mode}")
@@ -25,45 +29,52 @@ class AirSimGUI(QWidget):
     def update_image(self,qimg:QImage):
         pixmap = QPixmap.fromImage(qimg)
         self.image.setPixmap(pixmap)
+        
+    def on_press(self, key):
+        try:
+            if key.char == 'w':
+                self.update_status("W")
+                self.drone.set_status("Forward")
+            elif key.char == 's':
+                self.update_status("S")
+                self.drone.set_status("Backward")
+            elif key.char == 'a':
+                self.update_status("A")
+                self.drone.set_status("Left")
+            elif key.char == 'd':
+                self.update_status("D")
+                self.drone.set_status("Right")
+            elif key.char == 'q':
+                self.update_status("Q")
+                self.drone.set_status("Turn Left")
+            elif key.char == 'e':
+                self.update_status("E")
+                self.drone.set_status("Turn Right")
+            elif key.char == 'p':
+                self.update_status("P")
+                self.drone.take_image()
+        except AttributeError:
+            # 处理特殊按键
+            if key == keyboard.Key.space:
+                self.update_status("Space")
+                self.drone.set_status("Hover")
+            elif key == keyboard.Key.shift:
+                self.update_status("Shift")
+                self.drone.set_status("Dropping")
+            elif key == keyboard.Key.l:
+                self.update_status("L")
+                self.drone.landing()
+            elif key == keyboard.Key.h:
+                self.update_status("H")
+                self.drone.takeoff()
 
-    def keyPressEvent(self,event):
-        if event.key() == Qt.Key_W:
-            self.update_status("W")
-            self.drone.set_status("Forward")
-        elif event.key() == Qt.Key_S:
-            self.update_status("S")
-            self.drone.set_status("Backward")
-        elif event.key() == Qt.Key_A:
-            self.update_status("A")
-            self.drone.set_status("Left")
-        elif event.key() == Qt.Key_D:
-            self.update_status("D")
-            self.drone.set_status("Right")
-        elif event.key() == Qt.Key_Space:
-            self.update_status("Space")
-            self.drone.set_status("Hover")
-        elif event.key() == Qt.Key_Shift:
-            self.update_status("Shift")
-            self.drone.set_status("Dropping")
-        elif event.key() == Qt.Key_L:
-            self.update_status("L")
-            self.drone.landing()
-        elif event.key() == Qt.Key_H:
-            self.update_status("H")
-            self.drone.takeoff()
-        elif event.key() == Qt.Q:
-            self.update_status("Q")
-            self.drone.set_status("Turn Left")
-        elif event.key() == Qt.E:
-            self.update_status("E")
-            self.drone.set_status("Turn Right")
-        elif event.key() == Qt.P:
-            self.update_status("P")
-
-    def keyReleaseEvent(self, event):
+    def on_release(self, key):
+        # 松开按键时恢复为 None
         self.update_status("None")
+        self.drone.set_status("None")
 
     def closeEvent(self, event):
+        self.listener.stop()
         self.drone.landing()
         self.drone.running=False
         self.drone.wait()
