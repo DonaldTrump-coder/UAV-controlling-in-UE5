@@ -3,6 +3,8 @@ Run main.py file with the level runtime in Unreal Engine 5.3
 
 The drone simulation is done by `Colosseum`, thanks to https://github.com/CodexLabsLLC/Colosseum
 
+The Gaussian Splatting demonstration is done by `XScene-UEPlugin`, thanks to https://github.com/xverse-engine/XScene-UEPlugin   感谢元象XVERSE！！！
+
 ---
 ## Demo
 ---
