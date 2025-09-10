@@ -7,8 +7,8 @@ The Gaussian Splatting demonstration is done by `XScene-UEPlugin`, thanks to htt
 
 ---
 ## Demo
-`Bilibili:`https://www.bilibili.com/video/BV1nJH9zRECd/
-`Douyin:`https://www.douyin.com/video/7548491635751996691
+`Bilibili:`https://www.bilibili.com/video/BV1nJH9zRECd/<br>
+`Douyin:`https://www.douyin.com/video/7548491635751996691<br>
 `YouTube:`https://youtu.be/yzzbYpNtpw0
 
 ---
