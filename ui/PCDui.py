@@ -1,5 +1,6 @@
 import pyqtgraph.opengl as gl
 import numpy as np
+from PyQt5.QtGui import QVector3D
 
 class PointCloudWidget(gl.GLViewWidget):
     def __init__(self, parent = None):
@@ -7,7 +8,7 @@ class PointCloudWidget(gl.GLViewWidget):
 
         # 相机与坐标轴
         self.setCameraPosition(distance=10)
-        self.opts['center'] = (0, 0, 0)
+        self.opts['center'] = QVector3D(0, 0, 0)
         
         # 添加网格
         grid_x = gl.GLGridItem()
