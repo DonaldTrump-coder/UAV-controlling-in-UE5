@@ -3,6 +3,7 @@ from controller import Controller
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage,QPixmap
 from pynput import keyboard
+from ui.PCDui import PointCloudWidget
 
 class AirSimGUI(QWidget):
     def __init__(self):
@@ -14,9 +15,15 @@ class AirSimGUI(QWidget):
         hbox = QHBoxLayout(self)
         self.image=QLabel(self)
         self.image.setStyleSheet("background-color: lightgray;")
+        self.right_widget = QWidget(self)
+        vbox = QVBoxLayout(self.right_widget)
         self.coordinate=QLabel(self)
+        self.pcd_widget = PointCloudWidget(self)
+        vbox.addWidget(self.coordinate)
+        vbox.addWidget(self.pcd_widget)
+
         hbox.addWidget(self.image)
-        hbox.addWidget(self.coordinate)
+        hbox.addWidget(self.right_widget)
         layout.addWidget(self.status)
         layout.addLayout(hbox)
 
