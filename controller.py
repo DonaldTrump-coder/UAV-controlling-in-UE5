@@ -10,6 +10,7 @@ class Controller(QThread):
     image_signal=pyqtSignal(QImage) #signal to send image
     coordinage_signal = pyqtSignal(list)
     status="None"
+    GSfile = ""
 
     def __init__(self):
         super().__init__()

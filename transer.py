@@ -1,4 +1,5 @@
 import numpy as np
+import open3d as o3d
 
 X = 0
 Y = 0
@@ -34,3 +35,17 @@ def inverse_UE_transform(x_world, y_world, z_world):
     P_world = np.array([x_world, y_world, z_world])
     P_local = R.T @ (P_world - T)
     return float(P_local[0]), float(-P_local[1]), float(P_local[2]) # left-handed to right-handed
+
+def get_GS_points(filename):
+    pcd = o3d.io.read_point_cloud(filename)
+    points = np.asarray(pcd.points)
+
+    num_points = points.shape[0]
+    sample_ratio = 0.4
+    sample_num = int(num_points * sample_ratio)
+
+    # 随机抽样索引
+    indices = np.random.choice(num_points, sample_num, replace=False)
+    points = points[indices]
+
+    return points
