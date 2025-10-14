@@ -16,6 +16,7 @@ class AirSimGUI(QWidget):
         self.image=QLabel(self)
         self.image.setStyleSheet("background-color: lightgray;")
         self.image.setAlignment(Qt.AlignCenter)
+        self.image.setMinimumSize(200, 200)
         self.right_widget = QWidget(self)
         vbox = QVBoxLayout(self.right_widget)
         self.coordinate=QLabel(self)
