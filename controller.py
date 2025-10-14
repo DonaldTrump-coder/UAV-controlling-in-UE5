@@ -3,7 +3,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QImage
 import numpy as np
 import cv2
-import time
+from transer import inverse_UE_transform
 
 class Controller(QThread):
 
@@ -64,6 +64,7 @@ class Controller(QThread):
         self.x_ue = y_ned * 100
         self.y_ue = x_ned * 100
         self.z_ue = -z_ned * 100
+        self.x_ue, self.y_ue, self.z_ue = inverse_UE_transform(self.x_ue, self.y_ue, self.z_ue)
 
     def take_image(self):
         png_image = self.client.simGetImage("0", airsim.ImageType.Scene)
