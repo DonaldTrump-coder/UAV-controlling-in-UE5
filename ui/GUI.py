@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget,QVBoxLayout,QLabel
+from PyQt5.QtWidgets import QWidget,QVBoxLayout,QLabel,QHBoxLayout
 from controller import Controller
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage,QPixmap
@@ -11,13 +11,18 @@ class AirSimGUI(QWidget):
 
         layout=QVBoxLayout(self)
         self.status=QLabel("Present Button: None",self)
+        hbox = QHBoxLayout(self)
         self.image=QLabel(self)
         self.image.setStyleSheet("background-color: lightgray;")
+        self.coordinate=QLabel(self)
+        hbox.addWidget(self.image)
+        hbox.addWidget(self.coordinate)
         layout.addWidget(self.status)
-        layout.addWidget(self.image)
+        layout.addLayout(hbox)
 
         self.drone=Controller()
         self.drone.image_signal.connect(self.update_image)
+        self.drone.coordinage_signal.connect(self.update_coordinates)
         self.drone.start()
         
         self.listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
@@ -29,6 +34,10 @@ class AirSimGUI(QWidget):
     def update_image(self,qimg:QImage):
         pixmap = QPixmap.fromImage(qimg)
         self.image.setPixmap(pixmap)
+
+    def update_coordinates(self,coordinate:list):
+        #update the coordinates of drone
+        self.coordinate.setText(f"X:{coordinate[0]} Y:{coordinate[1]} Z:{coordinate[2]}")
         
     def on_press(self, key):
         try:

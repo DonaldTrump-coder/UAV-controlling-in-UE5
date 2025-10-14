@@ -8,6 +8,7 @@ import time
 class Controller(QThread):
 
     image_signal=pyqtSignal(QImage) #signal to send image
+    coordinage_signal = pyqtSignal(list)
     status="None"
 
     def __init__(self):
@@ -55,6 +56,15 @@ class Controller(QThread):
     def turn_right(self):
         self.client.rotateByYawRateAsync(yaw_rate=5, duration=0.1).join()
 
+    def get_coordinate(self):
+        # get UE coordinate of Drone
+        state = self.client.getMultirotorState()
+        pos = state.kinematics_estimated.position
+        x_ned, y_ned, z_ned = pos.x_val, pos.y_val, pos.z_val
+        self.x_ue = y_ned * 100
+        self.y_ue = x_ned * 100
+        self.z_ue = -z_ned * 100
+
     def take_image(self):
         png_image = self.client.simGetImage("0", airsim.ImageType.Scene)
         np_img = np.frombuffer(png_image, dtype=np.uint8)
@@ -71,6 +81,8 @@ class Controller(QThread):
 
     def run(self):
         while self.running is True:
+            self.get_coordinate()
+            self.coordinage_signal([self.x_ue,self.y_ue,self.z_ue])
             if self.landed is True:
                 continue
             if self.status == "None":
