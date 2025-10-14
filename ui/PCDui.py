@@ -32,3 +32,10 @@ class PointCloudWidget(gl.GLViewWidget):
 
         self.scatter = gl.GLScatterPlotItem(pos=self.points, color=self.colors, size=5)
         self.addItem(self.scatter)
+
+    def update_pointcloud(self, points: np.ndarray):
+        if points is None or len(points) == 0:
+            return
+        self.points = np.asarray(points, dtype=float)
+        self.colors = np.ones((len(points), 4))
+        self.scatter.setData(pos=self.points, color=self.colors)
