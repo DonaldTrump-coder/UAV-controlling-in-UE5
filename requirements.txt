@@ -1,7 +1,6 @@
 numpy==2.0.2
 msgpack-python==0.5.6
 msgpack-rpc-python==0.4.1
-git+https://github.com/CodexLabsLLC/Colosseum.git#subdirectory=PythonClient&egg=airsim
 opencv-contrib-python==4.12.0.88
 pynput==1.8.1
 PyQt5==5.15.11
@@ -10,3 +9,4 @@ PyQt5_sip==12.17.0
 six==1.17.0
 tornado==4.5.3
 pyqtgraph==0.13.7
+./Colosseum/PythonClient
