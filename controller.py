@@ -83,7 +83,7 @@ class Controller(QThread):
     def run(self):
         while self.running is True:
             self.get_coordinate()
-            self.coordinage_signal([self.x_ue,self.y_ue,self.z_ue])
+            self.coordinage_signal.emit([self.x_ue,self.y_ue,self.z_ue])
             if self.landed is True:
                 continue
             if self.status == "None":
@@ -104,3 +104,5 @@ class Controller(QThread):
                 self.turn_left()
             elif self.status == "Turn Right":
                 self.turn_right()
+            elif self.status == "Take Image":
+                self.take_image()

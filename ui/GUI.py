@@ -61,7 +61,7 @@ class AirSimGUI(QWidget):
                 self.drone.set_status("Turn Right")
             elif key.char == 'p':
                 self.update_status("P")
-                self.drone.take_image()
+                self.drone.set_status("Take Image")
         except AttributeError:
             # 处理特殊按键
             if key == keyboard.Key.space:
