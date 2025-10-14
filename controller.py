@@ -59,7 +59,7 @@ class Controller(QThread):
     def get_coordinate(self):
         # get UE coordinate of Drone
         state = self.client.getMultirotorState()
-        pos = state.kinematics_estimated.position
+        pos = state[0].kinematics_estimated.position
         x_ned, y_ned, z_ned = pos.x_val, pos.y_val, pos.z_val
         self.x_ue = y_ned * 100
         self.y_ue = x_ned * 100
