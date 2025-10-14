@@ -12,9 +12,10 @@ class AirSimGUI(QWidget):
 
         layout=QVBoxLayout(self)
         self.status=QLabel("Present Button: None",self)
-        hbox = QHBoxLayout(self)
+        hbox = QHBoxLayout()
         self.image=QLabel(self)
         self.image.setStyleSheet("background-color: lightgray;")
+        self.image.setAlignment(Qt.AlignCenter)
         self.right_widget = QWidget(self)
         vbox = QVBoxLayout(self.right_widget)
         self.coordinate=QLabel(self)
@@ -22,8 +23,8 @@ class AirSimGUI(QWidget):
         vbox.addWidget(self.coordinate)
         vbox.addWidget(self.pcd_widget)
 
-        hbox.addWidget(self.image)
-        hbox.addWidget(self.right_widget)
+        hbox.addWidget(self.image, stretch=2)
+        hbox.addWidget(self.right_widget, stretch=3)
         layout.addWidget(self.status)
         layout.addLayout(hbox)
 
