@@ -21,8 +21,8 @@ class AirSimGUI(QWidget):
         vbox = QVBoxLayout(self.right_widget)
         self.coordinate=QLabel(self)
         self.pcd_widget = PointCloudWidget(self)
-        vbox.addWidget(self.coordinate)
-        vbox.addWidget(self.pcd_widget)
+        vbox.addWidget(self.coordinate, stretch=1)
+        vbox.addWidget(self.pcd_widget, stretch=6)
 
         hbox.addWidget(self.image, stretch=2)
         hbox.addWidget(self.right_widget, stretch=3)
