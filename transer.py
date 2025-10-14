@@ -9,7 +9,7 @@ Roll = 0 # degrees
 
 def inverse_UE_transform(x_world, y_world, z_world):
     # rotations and translation in of GS in UE
-    pitch, yaw, roll = np.radians([pitch, yaw, roll])
+    pitch, yaw, roll = np.radians([Pitch, Yaw, Roll])
 
     Rx = np.array([
         [1, 0, 0],
