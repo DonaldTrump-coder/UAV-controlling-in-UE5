@@ -22,7 +22,7 @@ class AirSimGUI(QWidget):
         self.coordinate=QLabel(self)
         self.pcd_widget = PointCloudWidget(self)
         vbox.addWidget(self.coordinate, stretch=1)
-        vbox.addWidget(self.pcd_widget, stretch=6)
+        vbox.addWidget(self.pcd_widget, stretch=10)
 
         hbox.addWidget(self.image, stretch=2)
         hbox.addWidget(self.right_widget, stretch=3)
@@ -46,7 +46,7 @@ class AirSimGUI(QWidget):
 
     def update_coordinates(self,coordinate:list):
         #update the coordinates of drone
-        self.coordinate.setText(f"X:{coordinate[0]} Y:{coordinate[1]} Z:{coordinate[2]}")
+        self.coordinate.setText(f"X:{coordinate[0]:.6f} Y:{coordinate[1]:.6f} Z:{coordinate[2]:.6f}")
         
     def on_press(self, key):
         try:
