@@ -3,12 +3,13 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QImage
 import numpy as np
 import cv2
-from transer import inverse_UE_transform
+from transer import inverse_UE_transform, get_GS_points
 
 class Controller(QThread):
 
     image_signal=pyqtSignal(QImage) #signal to send image
     coordinage_signal = pyqtSignal(list)
+    init_coord_signal = pyqtSignal(tuple)
     status="None"
     GSfile = ""
 
@@ -21,6 +22,7 @@ class Controller(QThread):
         self.client.takeoffAsync().join() #taking off before controlling
         self.running=True
         self.landed=False
+        self.calculator=0
 
     def takeoff(self):
         self.client.takeoffAsync().join()
@@ -82,9 +84,12 @@ class Controller(QThread):
         self.image_signal.emit(qimg)
 
     def run(self):
+        self.get_coordinate()
+        self.init_coord_signal.emit((get_GS_points(self.GSfile),np.array([self.x_ue, self.y_ue, self.z_ue])))
         while self.running is True:
-            self.get_coordinate()
-            self.coordinage_signal.emit([self.x_ue,self.y_ue,self.z_ue])
+            if self.calculator==0:
+                self.get_coordinate()
+                self.coordinage_signal.emit([self.x_ue,self.y_ue,self.z_ue])
             if self.landed is True:
                 continue
             if self.status == "None":
@@ -107,3 +112,6 @@ class Controller(QThread):
                 self.turn_right()
             elif self.status == "Take Image":
                 self.take_image()
+            self.calculator+=1
+            if self.calculator>20:
+                self.calculator=0

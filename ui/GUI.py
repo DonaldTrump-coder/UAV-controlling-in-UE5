@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage,QPixmap
 from pynput import keyboard
 from ui.PCDui import PointCloudWidget
+import numpy as np
 
 class AirSimGUI(QWidget):
     def __init__(self):
@@ -32,6 +33,7 @@ class AirSimGUI(QWidget):
         self.drone=Controller()
         self.drone.image_signal.connect(self.update_image)
         self.drone.coordinage_signal.connect(self.update_coordinates)
+        self.drone.init_coord_signal.connect(self.init_coord)
         self.drone.start()
         
         self.listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
@@ -47,6 +49,10 @@ class AirSimGUI(QWidget):
     def update_coordinates(self,coordinate:list):
         #update the coordinates of drone
         self.coordinate.setText(f"X:{coordinate[0]:.6f} Y:{coordinate[1]:.6f} Z:{coordinate[2]:.6f}")
+        self.pcd_widget.change_pos(np.array([coordinate[0], coordinate[1], coordinate[2]]))
+
+    def init_coord(self, coordinates: tuple):
+        self.pcd_widget.get_pointcloud(coordinates[0], coordinates[1])
         
     def on_press(self, key):
         try:

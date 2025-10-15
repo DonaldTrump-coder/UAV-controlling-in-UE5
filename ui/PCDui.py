@@ -42,6 +42,11 @@ class PointCloudWidget(gl.GLViewWidget):
         self.colors = np.vstack([self.colors, [1, 0, 0, 1]])
         self.scatter.setData(pos=self.points, color=self.colors)
 
+        center = np.mean(self.points, axis=0)
+        self.opts['center'] = QVector3D(*center)
+        max_range = np.max(np.linalg.norm(self.points - center, axis=1))
+        self.setCameraPosition(distance=max_range * 2.0)
+
     def change_pos(self, point: np.ndarray):
         point = np.asarray(point, dtype=float).reshape(1, 3)
         self.points[-1] = point
